@@ -4,6 +4,7 @@ package skhu.campingmanagementsystem.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.Sort;
 import skhu.campingmanagementsystem.dto.ItemDto;
 
 import java.util.ArrayList;
@@ -27,23 +28,23 @@ public class Item extends BaseEntity{
     private Long price;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "item")
-    private List<OrderDetail> orderDetails = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = " Orders_id")
+    private Order order;
+
 
     //엔티티 -> Dto
     public ItemDto toDto(){
         return ItemDto.builder()
-                .id(this.id)
+                .itemId(this.id)
                 .name(this.name)
                 .price(this.price)
-                .orderDetails(this.orderDetails)
                 .build();
     }
 
     public void update(ItemDto itemDto){
         this.name=itemDto.getName();
         this.price=itemDto.getPrice();
-        this.orderDetails= itemDto.getOrderDetails();
     }
 
 }

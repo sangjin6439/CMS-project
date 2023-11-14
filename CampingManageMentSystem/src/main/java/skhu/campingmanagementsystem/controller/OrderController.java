@@ -5,11 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import skhu.campingmanagementsystem.domain.Order;
 import skhu.campingmanagementsystem.dto.OrderDto;
+import skhu.campingmanagementsystem.dto.OrderDto1;
 import skhu.campingmanagementsystem.dto.request.CreateOrderDto;
 import skhu.campingmanagementsystem.dto.resonse.ResponseOrderDto;
+import skhu.campingmanagementsystem.repository.OrderRepository;
 import skhu.campingmanagementsystem.service.OrderService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,14 +21,13 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
-    @PostMapping
-    public Order add(@RequestBody CreateOrderDto orderDto){
-        return orderService.addOrder(orderDto);
-    }
 
-    @GetMapping("/{id}")
-    public OrderDto find(@PathVariable Long id){
-        return orderService.findOrderById(id);
-    }
+
+
+//    @GetMapping("/{id}")
+//    public OrderDto find(@PathVariable Long id){
+//        return orderService.findOrderById(id);
+//    }
 }

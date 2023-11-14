@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import skhu.campingmanagementsystem.dto.ItemDto;
 import skhu.campingmanagementsystem.service.ItemService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/item")
@@ -21,6 +23,11 @@ public class ItemController {
     @GetMapping("/{id}")
     public ItemDto find(@PathVariable Long id){
         return itemService.findUserByIdAs(id);
+    }
+
+    @GetMapping
+    public List<ItemDto> find(){
+        return itemService.findAll();
     }
 
     @PatchMapping

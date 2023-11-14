@@ -1,14 +1,18 @@
 package skhu.campingmanagementsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import skhu.campingmanagementsystem.domain.Item;
 import skhu.campingmanagementsystem.domain.Order;
-import skhu.campingmanagementsystem.domain.OrderDetail;
 import skhu.campingmanagementsystem.domain.User;
+
+import skhu.campingmanagementsystem.dto.ItemDto;
 import skhu.campingmanagementsystem.dto.OrderDto;
+import skhu.campingmanagementsystem.dto.OrderDto1;
 import skhu.campingmanagementsystem.dto.request.CreateOrderDto;
 import skhu.campingmanagementsystem.dto.resonse.ResponseOrderDto;
 import skhu.campingmanagementsystem.repository.ItemRepository;
@@ -28,50 +32,50 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
 
-    @Transactional
-    public Order addOrder(CreateOrderDto orderDto) {
-        User user = userRepository.findUserById(orderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
-
-        Order order = Order.builder()
-                .user(user)
-                .build();
-        orderRepository.save(order);
-        return order;
-    }
-
-
-    @Transactional(readOnly = true)
-    public OrderDto findOrderById(Long orderId) {
-        User user = userRepository.findUserById(orderId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
-        orderRepository.findOrderByUserId(orderId);
-        return OrderDto.builder()
-                .id(orderId)
-                .user(user)
-                .build();
-
+@Transactional
+    public Order saveOrder(CreateOrderDto createOrderDto){
+    User user = userRepository.findUserById(createOrderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
 
     }
+
+
+
+
+//    @Transactional
+//    public Order addOrder(CreateOrderDto orderDto) {
+//        User user = userRepository.findUserById(orderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
+//
+//
+//
+//        for(OrderDetailDto orderDetailDto : orderDto.getOrderDetailDtos()){
+//            Item item = itemRepository.findItemById(orderDetailDto.getItemId()).orElseThrow(()->new IllegalArgumentException("상품 번호를 확인해주세요"));
+//            OrderDetail orderDetail = OrderDetail.builder()
+//                    .count(orderDetailDto.getCount())
+//                    .totalPrice((int) (orderDetailDto.getCount()*item.getPrice()))
+//                    .build();
+//            Order order = Order.builder()
+//                    .orderDetails((List<OrderDetail>) orderDetail)
+//                    .user(user)
+//                    .build();
+//
+//        }
+//        orderRepository.save(order);
+//
+//        return order;
+//    }
+//
+//
+//    @Transactional(readOnly = true)
+//    public OrderDto findOrderById(Long orderId) {
+//        User user = userRepository.findUserById(orderId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
+//        orderRepository.findOrderByUserId(orderId);
+//        return OrderDto.builder()
+//                .id(orderId)
+//                .user(user)
+//                .build();
+//
+//
+//    }
 
 }
-    /*@Transactional
-    public String add (OrderDto orderDto) {
-        User user = userRepository.findUserById(orderDto.getId()).orElseThrow(()-> new IllegalArgumentException("찾는 회원 정보가 없습니다."));
-//        Item item = itemRepository.findItemById(itemId).orElseThrow(()-> new IllegalArgumentException("찾는 물품 정보가 없습니다."));
-        Order order = Order.builder()
-                .user(user)
-                .build();
-        orderRepository.save(order);
-        return "주문 완료!!!!";
-    }
 
-    @Transactional(readOnly = true)
-    public OrderDto findByUserIdAs(Long userId){
-        return findByUserId(userId).toDto();
-
-    }
-
-    //조회 메서드
-    private Order findByUserId(Long userId){
-        return orderRepository.findOrderById(userId).orElseThrow(()->new IllegalArgumentException("찾으시는 회원이 없습니다."));
-    }*/
-//}

@@ -8,6 +8,9 @@ import skhu.campingmanagementsystem.domain.Item;
 import skhu.campingmanagementsystem.dto.ItemDto;
 import skhu.campingmanagementsystem.repository.ItemRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemService {
@@ -26,19 +29,33 @@ public class ItemService {
         return Item.builder()
                 .name(itemDto.getName())
                 .price(itemDto.getPrice())
-                .orderDetails(itemDto.getOrderDetails())
                 .build();
     }
 
     //아이디로 조회
     @Transactional(readOnly = true)
     public ItemDto findUserByIdAs(Long itemId){
-        ItemDto itemDto = findUserById(itemId).toDto();
-        return itemDto;
+        return findUserById(itemId).toDto();
     }
 
     private Item findUserById(Long itemId){
         return itemRepository.findItemById(itemId).orElseThrow(()->new IllegalArgumentException("정확한 정보를 입력해주세요"));
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ItemDto> findAll(){
+        List<Item> items = itemRepository.findAll();
+        List<ItemDto> itemDtos =new ArrayList<>();
+        for (Item item : items) {
+            ItemDto itemDto = ItemDto.builder()
+                    .itemId(item.getId())
+                    .price(item.getPrice())
+                    .name(item.getName())
+                    .build();
+            itemDtos.add(itemDto);
+        }
+        
+         return itemDtos;
     }
 
     //정보 수정
@@ -50,7 +67,7 @@ public class ItemService {
 
     //수정 메서드
     private void updateItem(ItemDto itemDto){
-        findUserById(itemDto.getId()).update(itemDto);
+        findUserById(itemDto.getItemId()).update(itemDto);
     }
 
     public String delete(Long itemId){
