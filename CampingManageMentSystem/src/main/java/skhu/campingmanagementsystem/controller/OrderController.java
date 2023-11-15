@@ -2,12 +2,11 @@ package skhu.campingmanagementsystem.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import skhu.campingmanagementsystem.domain.Order;
 import skhu.campingmanagementsystem.dto.OrderDto;
-import skhu.campingmanagementsystem.dto.OrderDto1;
 import skhu.campingmanagementsystem.dto.request.CreateOrderDto;
-import skhu.campingmanagementsystem.dto.resonse.ResponseOrderDto;
 import skhu.campingmanagementsystem.repository.OrderRepository;
 import skhu.campingmanagementsystem.service.OrderService;
 
@@ -21,9 +20,11 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
 
-
+    @PostMapping
+    public Order save(@RequestBody CreateOrderDto createOrderDto){
+        return orderService.saveOrder(createOrderDto);
+    }
 
 
 //    @GetMapping("/{id}")

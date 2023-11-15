@@ -12,9 +12,8 @@ import skhu.campingmanagementsystem.domain.User;
 
 import skhu.campingmanagementsystem.dto.ItemDto;
 import skhu.campingmanagementsystem.dto.OrderDto;
-import skhu.campingmanagementsystem.dto.OrderDto1;
 import skhu.campingmanagementsystem.dto.request.CreateOrderDto;
-import skhu.campingmanagementsystem.dto.resonse.ResponseOrderDto;
+import skhu.campingmanagementsystem.dto.request.RequestItemDto;
 import skhu.campingmanagementsystem.repository.ItemRepository;
 import skhu.campingmanagementsystem.repository.OrderRepository;
 import skhu.campingmanagementsystem.repository.UserRepository;
@@ -32,13 +31,26 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
 
-@Transactional
-    public Order saveOrder(CreateOrderDto createOrderDto){
-    User user = userRepository.findUserById(createOrderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
+    @Transactional
+    public Order saveOrder(CreateOrderDto createOrderDto) {
+        User user = userRepository.findUserById(createOrderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
 
+        List<RequestItemDto> itemDtos = createOrderDto.getRequestItemDtos();
+
+        List<Item> items = new ArrayList<>();
+        for (RequestItemDto requestItemDto : itemDtos) {
+            Item item = itemRepository.findItemById(requestItemDto.getItemId())
+                    .orElseThrow(() -> new IllegalArgumentException("찾으시는 상품이 없습니다."));
+            items.add(item);
+        }
+
+        Order order = Order.builder()
+                .user(user)
+                .items(items)
+                .build();
+
+        return orderRepository.save(order);
     }
-
-
 
 
 //    @Transactional
@@ -46,7 +58,7 @@ public class OrderService {
 //        User user = userRepository.findUserById(orderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
 //
 //
-//
+    //
 //        for(OrderDetailDto orderDetailDto : orderDto.getOrderDetailDtos()){
 //            Item item = itemRepository.findItemById(orderDetailDto.getItemId()).orElseThrow(()->new IllegalArgumentException("상품 번호를 확인해주세요"));
 //            OrderDetail orderDetail = OrderDetail.builder()
