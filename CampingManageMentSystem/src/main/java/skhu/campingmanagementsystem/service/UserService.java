@@ -26,11 +26,9 @@ public class UserService {
     }
     //저장 메서드
     private User saveUser(UserDto userDto){
-        LocalDateTime dateTime = LocalDateTime.now();
         return User.builder() //절때 아이디 값을 저장하게 하지마!!!!
                 .name(userDto.getName())
                 .phoneNumber(userDto.getPhoneNumber())
-//              .orders(userDto.getOrders())
                 .build();
     }
 
