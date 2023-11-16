@@ -7,6 +7,8 @@ import skhu.campingmanagementsystem.domain.User;
 import skhu.campingmanagementsystem.dto.UserDto;
 import skhu.campingmanagementsystem.repository.UserRepository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service // 꼭 @Transaction 어노테이션 넣자..
@@ -24,10 +26,11 @@ public class UserService {
     }
     //저장 메서드
     private User saveUser(UserDto userDto){
+        LocalDateTime dateTime = LocalDateTime.now();
         return User.builder() //절때 아이디 값을 저장하게 하지마!!!!
                 .name(userDto.getName())
                 .phoneNumber(userDto.getPhoneNumber())
-                .orders(userDto.getOrders())
+//              .orders(userDto.getOrders())
                 .build();
     }
 
@@ -49,14 +52,27 @@ public class UserService {
     public List<User> findAllUsers(){
         return userRepository.findAll();
     }
-//    public List<UserDto> findAllUsers(){
-//        List<User> users = userRepository.findAll();
-//        List<UserDto> result = new ArrayList<>();
-//
-//        for (User user : users) {
-//            result.add(Useruser.getId());
-//        }
-//    }
+
+    //DTO로 모두 조회
+    @Transactional(readOnly = true)
+    public List<UserDto> findAll(){
+
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+
+        for (User user : users) {
+//            User user1 = userRepository.findUserById(user.getId()).orElseThrow(); 이 코드를 쓸 이유가 없음, 이미 정보를 가져왔음
+            UserDto userDto1 = UserDto.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .phoneNumber(user.getPhoneNumber())
+                    .createAt(user.getCreateAt())
+                    .updateAt(user.getUpdateAt())
+                    .build();
+            userDtos.add(userDto1);
+        }
+        return userDtos;
+    }
 
 
     //수정

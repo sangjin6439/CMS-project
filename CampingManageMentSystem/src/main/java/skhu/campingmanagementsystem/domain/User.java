@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import skhu.campingmanagementsystem.dto.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,9 @@ public class User extends BaseEntity {
                 .id(this.id)
                 .name(this.name)
                 .phoneNumber(this.phoneNumber)
-                .orders(this.orders)
+//                .orders(this.orders)
+                .createAt(this.getCreateAt())
+                .updateAt(this.getUpdateAt())
                 .build();
     }
 
@@ -49,6 +52,6 @@ public class User extends BaseEntity {
     public void update(UserDto userDto){
         this.name=userDto.getName();
         this.phoneNumber=userDto.getPhoneNumber();
-        this.orders=userDto.getOrders();
+//        this.orders=userDto.getOrders();
     }
 }

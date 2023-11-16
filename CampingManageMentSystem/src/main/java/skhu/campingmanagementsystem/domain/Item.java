@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-public class Item extends BaseEntity{
+public class Item{
 
     @Id
     @GeneratedValue

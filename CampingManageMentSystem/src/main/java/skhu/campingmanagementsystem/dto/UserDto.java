@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 import skhu.campingmanagementsystem.domain.Order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -19,5 +20,7 @@ public class UserDto {
     private Long id;
     private String name;
     private String phoneNumber;
-    private List<Order>  orders;
+//    private List<Order>  orders;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 }

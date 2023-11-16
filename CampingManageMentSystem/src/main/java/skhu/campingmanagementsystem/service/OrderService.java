@@ -51,43 +51,4 @@ public class OrderService {
 
         return orderRepository.save(order);
     }
-
-
-//    @Transactional
-//    public Order addOrder(CreateOrderDto orderDto) {
-//        User user = userRepository.findUserById(orderDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
-//
-//
-    //
-//        for(OrderDetailDto orderDetailDto : orderDto.getOrderDetailDtos()){
-//            Item item = itemRepository.findItemById(orderDetailDto.getItemId()).orElseThrow(()->new IllegalArgumentException("상품 번호를 확인해주세요"));
-//            OrderDetail orderDetail = OrderDetail.builder()
-//                    .count(orderDetailDto.getCount())
-//                    .totalPrice((int) (orderDetailDto.getCount()*item.getPrice()))
-//                    .build();
-//            Order order = Order.builder()
-//                    .orderDetails((List<OrderDetail>) orderDetail)
-//                    .user(user)
-//                    .build();
-//
-//        }
-//        orderRepository.save(order);
-//
-//        return order;
-//    }
-//
-//
-//    @Transactional(readOnly = true)
-//    public OrderDto findOrderById(Long orderId) {
-//        User user = userRepository.findUserById(orderId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원 정보가 없습니다."));
-//        orderRepository.findOrderByUserId(orderId);
-//        return OrderDto.builder()
-//                .id(orderId)
-//                .user(user)
-//                .build();
-//
-//
-//    }
-
 }
-
