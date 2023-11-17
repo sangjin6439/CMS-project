@@ -26,6 +26,11 @@ public class OrderController {
         return orderService.saveOrder(createOrderDto);
     }
 
+    @DeleteMapping("/{id}")
+    public Order delete(@PathVariable Long id){
+        return orderService.deleteOrder(id);
+    }
+
 
 //    @GetMapping("/{id}")
 //    public OrderDto find(@PathVariable Long id){

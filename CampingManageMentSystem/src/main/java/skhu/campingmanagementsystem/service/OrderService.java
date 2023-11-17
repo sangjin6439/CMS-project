@@ -3,11 +3,13 @@ package skhu.campingmanagementsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import skhu.campingmanagementsystem.domain.Item;
 import skhu.campingmanagementsystem.domain.Order;
+import skhu.campingmanagementsystem.domain.OrderStatus;
 import skhu.campingmanagementsystem.domain.User;
 
 import skhu.campingmanagementsystem.dto.ItemDto;
@@ -47,8 +49,19 @@ public class OrderService {
         Order order = Order.builder()
                 .user(user)
                 .items(items)
+                .status(OrderStatus.ORDER)
                 .build();
-
         return orderRepository.save(order);
+    }
+
+
+    @Transactional
+    public Order deleteOrder(Long orderId){
+       Order order = orderRepository.findOrderById(orderId).orElseThrow(()->new IllegalArgumentException("정확한 주문 번호를 입력하세요."));
+        orderRepository.delete(order);
+
+        return Order.builder()
+                .status(OrderStatus.CANCEL)
+                .build();
     }
 }
